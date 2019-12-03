@@ -25,7 +25,7 @@ func Test_useTarget(t *testing.T) {
 		{
 			"wildcard",
 			args{
-				target{"abcd/foo", []string{"*", ".png"}},
+				target{"abcd/foo", []string{".*", ".png"}},
 				"foo/bar/abc.mp4",
 			},
 			true,
