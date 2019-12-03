@@ -1,6 +1,10 @@
 package main
 
-import "path/filepath"
+import (
+	"path/filepath"
+	"regexp"
+	"strings"
+)
 
 type target struct {
 	folder string
@@ -15,4 +19,17 @@ func useTarget(t target, fpath string) bool {
 		}
 	}
 	return false
+}
+
+var validHash = regexp.MustCompile("[a-fA-F0-9]{32}")
+
+func hashFromName(name string) (hash string, ok bool) {
+	e := strings.Split(name, ".")
+	hash = e[len(e)-2]
+	ok = true
+	if !validHash.MatchString(hash) {
+		ok = false
+		hash = ""
+	}
+	return hash, ok
 }
