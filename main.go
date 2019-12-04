@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"os/signal"
@@ -85,14 +86,33 @@ func moveToTargets(targets []target, filesToMove []string) {
 			fmt.Printf("target: %s\n", t.folder)
 			if t.hashExists(hash) {
 				fmt.Println("file already in target")
+				err = os.Remove(fname)
+				if err != nil {
+					fmt.Println("cannot remove file:", err)
+				}
 				continue
 			}
 			tfname := addHashToName(fname, hash)
 			tpath := filepath.Join(t.folder, tfname)
-			err = os.Rename(fname, tpath)
+			err = mv(tpath, fname)
 			if err != nil {
 				fmt.Println("cannot move: ", err)
 			}
 		}
 	}
+}
+
+func mv(dst, src string) error {
+	dFile, err := os.OpenFile(dst, os.O_CREATE|os.O_WRONLY, 0777)
+	if err != nil {
+		return fmt.Errorf("mv() dFile: %w", err)
+	}
+	sFile, err := os.Open(src)
+	if err != nil {
+		return fmt.Errorf("mv() sFile: %w", err)
+	}
+	io.Copy(dFile, sFile)
+	sFile.Close()
+	dFile.Close()
+	return os.Remove(src)
 }
