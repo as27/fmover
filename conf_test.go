@@ -21,8 +21,8 @@ func Test_readConf(t *testing.T) {
 			"simple conf",
 			args{strings.NewReader("/abc/def/ghi::jpg,png\n/foo/bar::*")},
 			[]target{
-				{"/abc/def/ghi", []string{".jpg", ".png"}},
-				{"/foo/bar", []string{".*"}},
+				{folder: "/abc/def/ghi", exts: []string{".jpg", ".png"}},
+				{folder: "/foo/bar", exts: []string{".*"}},
 			},
 			false,
 		},
@@ -30,7 +30,7 @@ func Test_readConf(t *testing.T) {
 			"wrong conf",
 			args{strings.NewReader("/abc/def/:jpg,png\n/foo/bar::*")},
 			[]target{
-				{"/foo/bar", []string{".*"}},
+				{folder: "/foo/bar", exts: []string{".*"}},
 			},
 			true,
 		},
@@ -38,7 +38,7 @@ func Test_readConf(t *testing.T) {
 			"comment",
 			args{strings.NewReader("#/abc/def/ghi::jpg,png\n/foo/bar::*")},
 			[]target{
-				{"/foo/bar", []string{".*"}},
+				{folder: "/foo/bar", exts: []string{".*"}},
 			},
 			false,
 		},

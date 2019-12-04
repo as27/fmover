@@ -25,7 +25,11 @@ func readConf(r io.Reader) (targets []target, err error) {
 		}
 		fpath := e[0]
 		exts := e[1]
-		t := target{fpath, splitExtString(exts)}
+		t := target{
+			folder: fpath,
+			exts:   splitExtString(exts),
+		}
+
 		targets = append(targets, t)
 	}
 	if errString != "" {

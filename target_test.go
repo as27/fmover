@@ -17,7 +17,7 @@ func Test_useTarget(t *testing.T) {
 		{
 			"matching extension",
 			args{
-				target{"abcd/foo", []string{".jpg", ".png"}},
+				target{folder: "abcd/foo", exts: []string{".jpg", ".png"}},
 				"foo/bar/abc.png",
 			},
 			true,
@@ -25,7 +25,7 @@ func Test_useTarget(t *testing.T) {
 		{
 			"wildcard",
 			args{
-				target{"abcd/foo", []string{".*", ".png"}},
+				target{folder: "abcd/foo", exts: []string{".*", ".png"}},
 				"foo/bar/abc.mp4",
 			},
 			true,
@@ -33,7 +33,7 @@ func Test_useTarget(t *testing.T) {
 		{
 			"no match",
 			args{
-				target{"abcd/foo", []string{".jpg", ".png"}},
+				target{folder: "abcd/foo", exts: []string{".jpg", ".png"}},
 				"foo/bar/abc.mp4",
 			},
 			false,
